@@ -70,7 +70,7 @@ class PLAYER:
         self.current_body = self.max_body:
         print(f"{self.name} has had their Body restored to {self.max_body}")
       else:
-        print
+        print(f"{self.name} has had their Body restored to {self.current_body}")
 
   # Healing Mind Points
   def heal_mind(self, mind_heal_value):
@@ -80,5 +80,7 @@ class PLAYER:
       # Over healing Prevention
       if self.current_mind > self.max_mind:
         self.current_mind = self.max_mind:
-        print(f"{self.name} has had their Mind restored to {self.max_mind}") 
+        print(f"{self.name} has had their Mind restored to {self.max_mind}")
+      else:
+        print(f"{self.name} has had their Mind restored to {self.current_mind}")
 

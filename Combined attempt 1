@@ -1,0 +1,320 @@
+#!/usr/bin/env python3
+
+# Player Class
+class PLAYER:
+  def __init__(self, name, movement_dice, attack_dice, defence_dice, body, mind):
+
+    # Player Name
+    self.name = name
+
+    # Movement Dice Count
+    self.current_movement = movement_dice
+    self.max_movement = movement_dice
+
+    # Attack and Defence Dice count
+    self.current_attack = attack_dice
+    self.max_attack = attack_dice
+    self.current_defence = defence_dice
+    self.max_defence = defence_dice
+
+    # Player current Body points and max Body points
+    self.max_body = body
+    self.current_body = body
+
+    # Status tied to Body points
+    self.body_status = "Alive"
+
+    # Player current Mind points and max Mind points
+    self.max_mind = mind
+    self.current_mind = mind
+
+    # Status tied to Mind points
+    self.mind_status = "Normal"
+
+  # Player taking damage to Body points
+  def take_damage_body(self, body_damage_value):
+    self.body_damage_value = body_damage_value
+    self.current_body -= self.body_damage_value
+    print(f"\n{self.name} takes {self.body_damage_value} to their Body!")
+
+    # When Player Body Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "Dead"
+      return self.body_status
+
+  # Player taking damage to mind points
+  def take_damage_mind(self, mind_damage_value):
+    self.mind_damage_value = mind_damage_value
+    self.current_mind -= self.mind_damage_value
+    print(f"\n{self.name} takes {self.mind_damage_value} to their Mind!")
+
+    # When Player Mind Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "In Shock"
+      self.current_attack = 1
+      self.current_defence = 2
+      self.current_movement = 1
+      return self.body_status
+     
+  # Healing Body Points
+  def heal_body(self, body_heal_value):
+    self.body_heal_value = body_heal_value
+    self.current_body += self.body_heal_value
+
+    # Over healing Prevention
+    if self.current_body > self.max_body:
+      self.current_body = self.max_body
+      print(f"{self.name} has had their Body restored to {self.max_body}")
+    else:
+      print(f"{self.name} has had their Body restored to {self.current_body}")
+
+  # Healing Mind Points
+  def heal_mind(self, mind_heal_value):
+    self.mind_heal_value = mind_heal_value
+    self.current_mind += self.mind_heal_value
+
+    # Over healing Prevention
+    if self.current_mind > self.max_mind:
+      self.current_mind = self.max_mind
+      print(f"{self.name} has had their Mind restored to {self.max_mind}")
+    else:
+      print(f"{self.name} has had their Mind restored to {self.current_mind}")
+
+# Monster Class
+class MONSTER:
+  def __init__(self, name, movement, attack_dice, defence_dice, body, mind):
+
+    # Monster Name
+    self.name = name
+
+    # Movement Count
+    self.current_movement = movement
+    self.max_movement = movement
+
+    # Attack and Defence Dice count
+    self.current_attack = attack_dice
+    self.max_attack = attack_dice
+    self.current_defence = defence_dice
+    self.max_defence = defence_dice
+
+    # Monster current Body points and max Body points
+    self.max_body = body
+    self.current_body = body
+
+    # Status tied to Body points
+    self.body_status = "Alive"
+
+    # Monster current Mind points and max Mind points
+    self.max_mind = mind
+    self.current_mind = mind
+
+    # Status tied to Mind points
+    self.mind_status = "Normal"
+
+  # Monster taking damage to Body points
+  def take_damage_body(self, body_damage_value):
+    self.body_damage_value = body_damage_value
+    self.current_body -= self.body_damage_value
+    print(f"\n{self.name} takes {self.body_damage_value} to their Body!")
+
+    # When Monster Body Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "Dead"
+      return self.body_status
+
+  # Monster taking damage to mind points
+  def take_damage_mind(self, mind_damage_value):
+    self.mind_damage_value = mind_damage_value
+    self.current_mind -= self.mind_damage_value
+    print(f"\n{self.name} takes {self.mind_damage_value} to their Mind!")
+
+    # When Monster Mind Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "In Shock"
+      if self.current_attack > 1:
+        self.current_attack = 1
+      if self.current_defence > 2:
+        self.current_defence = 2
+      self.current_movement = self.max_movement / 2
+      return self.body_status
+     
+  # Healing Body Points
+  def heal_body(self, body_heal_value):
+    self.body_heal_value = body_heal_value
+    self.current_body += self.body_heal_value
+
+    # Over healing Prevention
+    if self.current_body > self.max_body:
+      self.current_body = self.max_body
+      print(f"{self.name} has had their Body restored to {self.max_body}")
+    else:
+      print(f"{self.name} has had their Body restored to {self.current_body}")
+
+  # Healing Mind Points
+  def heal_mind(self, mind_heal_value):
+    self.mind_heal_value = mind_heal_value
+    self.current_mind += self.mind_heal_value
+
+    # Over healing Prevention
+    if self.current_mind > self.max_mind:
+      self.current_mind = self.max_mind
+      print(f"{self.name} has had their Mind restored to {self.max_mind}")
+    else:
+      print(f"{self.name} has had their Mind restored to {self.current_mind}")
+
+
+# Setting the Players stats
+# Player Name
+def get_player_name():
+  name = input(f"/nEnter Name of player in party (Q to stop adding more): ").lower()
+  print("")
+  return name
+
+# Player Movement Dice count
+def get_player_movement_dice():
+  while True:
+    try:
+      movement_dice = int(input("Enter Player's Movement Dice count: "))
+    except ValueError:
+      print("Invalid Movement Dice count. Please enter a number")
+    else:
+      break
+  return movement_dice
+
+# Player Attack Dice count
+def get_player_attack_dice():
+  while True:
+    try:
+      attack_dice = int(input("Enter Player's Attack Dice count: "))
+    except ValueError:
+      print("Invalid Attack Dice count. Please enter a number")
+    else:
+      break
+  return attack_dice
+
+# Player defence Dice count
+def get_player_defence_dice():
+  while True:
+    try:
+      defence_dice = int(input("Enter Player's Defence Dice count: "))
+    except ValueError:
+      print("Invalid Defence Dice count. Please enter a number")
+    else:
+      break
+  return defence_dice
+
+# Player Body Points
+def get_player_body():
+  while True:
+    try:
+      body = int(input("Enter Player's Body Point total: "))
+    except ValueError:
+      print("Invalid Body Point total. Please enter a number")
+    else:
+      break
+  return body
+
+# Player Mind Points
+def get_player_mind():
+  while True:
+    try:
+      mind = int(input("Enter Player's Mind Point total: "))
+    except ValueError:
+      print("Invalid Mind Point total. Please enter a number")
+    else:
+      break
+  return mind
+
+# Creating the player
+def create_player(name, movement_dice, attack_dice, defence_dice, body, mind):
+  player = PLAYER(name, movement_dice, attack_dice, defence_dice, body, mind)
+  return player
+
+# Print list of current party memebers and their status
+def print_party_status(party):
+  print("\nCurrent Party Status:")
+  for k, v in party.items():
+    if party[k].body_status == "Alive":
+      print(f"Name: {party[k].name}, Movement: {party[k].current_movement}, Attack: {party[k].current_attack}, Defence: {party[k].current_defence}, Body: {party[k].current_body}/{party[k].max_body} - {party[k].body_status},  Mind: {party[k].current_mind}/{party[k].max_mind} - {party[k].mind_status}")
+    else:
+      print(f"Name: {party[k].name} - {party[k].body_status}")
+
+# Setting the Monsters stats
+# Monster Name
+def get_monster_name():
+  name = input(f"/nEnter Name of monster in encounter (Q to stop adding more): ").lower()
+  print("")
+  return name
+
+# Monster Movement count
+def get_monster_movement():
+  while True:
+    try:
+      movement = int(input("Enter Monster's Movement count: "))
+    except ValueError:
+      print("Invalid Movement count. Please enter a number")
+    else:
+      break
+  return movement
+
+# Monster Attack Dice count
+def get_monster_attack_dice():
+  while True:
+    try:
+      attack_dice = int(input("Enter Monster's Attack Dice count: "))
+    except ValueError:
+      print("Invalid Attack Dice count. Please enter a number")
+    else:
+      break
+  return attack_dice
+
+# Monster defence Dice count
+def get_monster_defence_dice():
+  while True:
+    try:
+      defence_dice = int(input("Enter Monster's Defence Dice count: "))
+    except ValueError:
+      print("Invalid Defence Dice count. Please enter a number")
+    else:
+      break
+  return defence_dice
+
+# Monster Body Points
+def get_monster_body():
+  while True:
+    try:
+      body = int(input("Enter Monster's Body Point total: "))
+    except ValueError:
+      print("Invalid Body Point total. Please enter a number")
+    else:
+      break
+  return body
+
+# Monster Mind Points
+def get_monster_mind():
+  while True:
+    try:
+      mind = int(input("Enter Monster's Mind Point total: "))
+    except ValueError:
+      print("Invalid Mind Point total. Please enter a number")
+    else:
+      break
+  return mind
+
+# Creating the monster
+def create_monster(name, movement, attack_dice, defence_dice, body, mind):
+  monster = MONSTER(name, movement, attack_dice, defence_dice, body, mind)
+  return monster
+
+# Print list of current encounter members and their status
+def print_encounter_status(encounter):
+  print("\nCurrent Encounter Status:")
+  for k, v in encounter.items():
+    if encounter[k].body_status == "Alive":
+      print(f"Name: {encounter[k].name}, Movement: {encounter[k].current_movement}, Attack: {encounter[k].current_attack}, Defence: {encounter[k].current_defence}, Body: {encounter[k].current_body}/{encounter[k].max_body} - {encounter[k].body_status},  Mind: {encounter[k].current_mind}/{encounter[k].max_mind} - {encounter[k].mind_status}")
+    else:
+      print(f"Name: {encounter[k].name} - {encounter[k].body_status}")

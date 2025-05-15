@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+w#!/usr/bin/env python
 
 class PLAYER:
   def __init__(self, name, movement_dice, attack_dice, defence_dice, body, mind):
@@ -84,3 +84,70 @@ class PLAYER:
       else:
         print(f"{self.name} has had their Mind restored to {self.current_mind}")
 
+# Setting the Players stats
+
+# Player Name
+def get_player_name():
+  name = input(f"/nEnter Name of player in party (Q to stop adding more): ").lower()
+  print("")
+  return name
+
+# Player Movement Dice count
+def get_player_movement_dice():
+  while True:
+    try:
+      movement_dice = int(input("Enter Player's Movement Dice count: "))
+    except ValueError:
+      print("Invalid Movement Dice count. Please enter a number")
+    else:
+      break
+  return movement_dice
+
+# Player Attack Dice count
+def get_player_attack_dice():
+  while True:
+    try:
+      attack_dice = int(input("Enter Player's Attack Dice count: "))
+    except ValueError:
+      print("Invalid Attack Dice count. Please enter a number")
+    else:
+      break
+  return attack_dice
+
+# Player defence Dice count
+def get_player_defence_dice():
+  while True:
+    try:
+      defence_dice = int(input("Enter Player's Defence Dice count: "))
+    except ValueError:
+      print("Invalid Defence Dice count. Please enter a number")
+    else:
+      break
+  return defence_dice
+
+# Player Body Points
+def get_player_body():
+  while True:
+    try:
+      body = int(input("Enter Player's Body Point total: "))
+    except ValueError:
+      print("Invalid Body Point total. Please enter a number")
+    else:
+      break
+  return body
+
+# Player Mind Points
+def get_player_mind():
+  while True:
+    try:
+      mind = int(input("Enter Player's Mind Point total: "))
+    except ValueError:
+      print("Invalid Mind Point total. Please enter a number")
+    else:
+      break
+  return mind
+
+# Creating the player
+def create_player(name, movement_dice, attack_dice, defence_dice, body, mind):
+  player = PLAYER(name, movement_dice, attack_dice, defence_dice, body, mind)
+  return player

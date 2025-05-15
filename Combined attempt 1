@@ -139,7 +139,7 @@ class MONSTER:
         self.current_attack = 1
       if self.current_defence > 2:
         self.current_defence = 2
-      self.current_movement = self.max_movement / 2
+      self.current_movement = int(self.max_movement / 2)
       return self.body_status
      
   # Healing Body Points
@@ -170,7 +170,7 @@ class MONSTER:
 # Setting the Players stats
 # Player Name
 def get_player_name():
-  name = input(f"/nEnter Name of player in party (Q to stop adding more): ").lower()
+  name = input(f"\nEnter Name of player in party (Q to stop adding more): ").lower()
   print("")
   return name
 
@@ -246,7 +246,7 @@ def print_party_status(party):
 # Setting the Monsters stats
 # Monster Name
 def get_monster_name():
-  name = input(f"/nEnter Name of monster in encounter (Q to stop adding more): ").lower()
+  name = input(f"\nEnter Name of monster in encounter (Q to stop adding more): ").lower()
   print("")
   return name
 
@@ -328,7 +328,7 @@ def get_target_player(party):
         else:
             print("Invalid player name. Please try again.")
 
-# Getting target monster
+# Get target monster
 def get_target_monster(encounter):
   while True:
     monster = input("Enter the name of the monster to target: ").lower()
@@ -336,3 +336,128 @@ def get_target_monster(encounter):
       return encounter[monster]
     else:
       print("Invalid monster name. Please try again.")
+
+# handling player menu
+def handling_player_menu():
+    print("\nPlayer Management Menu:")
+    print("1. Damage Body")
+    print("2. Damage Mind")
+    print("3. Heal Body")
+    print("4. Heal Mind")
+    print("5. Exit")
+    option = input("Choose an option: ")
+    return option
+
+# handling monster menu
+def handling_monster_menu():
+    print("\nMonster Management Menu:")
+    print("1. Damage Body")
+    print("2. Damage Mind")
+    print("3. Heal Body")
+    print("4. Heal Mind")
+    print("5. Exit")
+    option = input("Choose an option: ")
+    return option
+
+# Main function to manage players and monsters
+def player_management(party):
+    # Setup phase
+    while True:
+        player_name = get_player_name()
+        if player_name == "q":
+            break
+        else:
+            player_attack = get_player_attack_dice()
+            player_defence = get_player_defence_dice()
+            player_movement = get_player_movement_dice()
+            player_body = get_player_body()
+            player_mind = get_player_mind()
+            player = create_player(player_name, player_movement, player_attack, player_defence, player_body, player_mind)
+            party.update({player.name: player})
+            print_party_status(party)
+    # Action phase
+    while True:
+        print_party_status(party)
+        option = handling_player_menu()
+        if option == "1":
+            target = get_target_player(party)
+            dmg = int(input("Enter body damage: "))
+            target.take_damage_body(dmg)
+        elif option == "2":
+            target = get_target_player(party)
+            dmg = int(input("Enter mind damage: "))
+            target.take_damage_mind(dmg)
+        elif option == "3":
+            target = get_target_player(party)
+            heal = int(input("Enter body healing: "))
+            target.heal_body(heal)
+        elif option == "4":
+            target = get_target_player(party)
+            heal = int(input("Enter mind healing: "))
+            target.heal_mind(heal)
+        elif option == "5":
+            break
+        else:
+            print("Invalid option.")
+
+def monster_management(encounter):
+    # Setup phase
+    while True:
+        monster_name = get_monster_name()
+        if monster_name == "q":
+            break
+        else:
+            monster_attack = get_monster_attack_dice()
+            monster_defence = get_monster_defence_dice()
+            monster_movement = get_monster_movement()
+            monster_body = get_monster_body()
+            monster_mind = get_monster_mind()
+            monster = create_monster(monster_name, monster_movement, monster_attack, monster_defence, monster_body, monster_mind)
+            encounter.update({monster.name: monster})
+            print_encounter_status(encounter)
+    # Action phase
+    while True:
+        print_encounter_status(encounter)
+        option = handling_monster_menu()
+        if option == "1":
+            target = get_target_monster(encounter)
+            dmg = int(input("Enter body damage: "))
+            target.take_damage_body(dmg)
+        elif option == "2":
+            target = get_target_monster(encounter)
+            dmg = int(input("Enter mind damage: "))
+            target.take_damage_mind(dmg)
+        elif option == "3":
+            target = get_target_monster(encounter)
+            heal = int(input("Enter body healing: "))
+            target.heal_body(heal)
+        elif option == "4":
+            target = get_target_monster(encounter)
+            heal = int(input("Enter mind healing: "))
+            target.heal_mind(heal)
+        elif option == "5":
+            break
+        else:
+            print("Invalid option.")
+
+if __name__ == "__main__":
+    print("\n")
+    print("\n")
+    print("Welcome to the Hero Quest monster and player tracker!")
+    print("\n")
+    print("\n")
+
+    party = {}
+    encounter = {}
+    
+    while True:
+        choice = input("\nMain Menu:\n1. Player Management\n2. Monster Management\n3. Exit\nChoose an option: ")
+        if choice == "1":
+            player_management(party)
+        elif choice == "2":
+            monster_management(encounter)
+        elif choice == "3":
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid option.")

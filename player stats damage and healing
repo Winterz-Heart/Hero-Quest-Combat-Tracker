@@ -1,4 +1,11 @@
 #!/usr/bin/env python
 
 class PLAYER:
-  def
+  def __init__(self, name, attack, defence, body, mind):
+
+  # Player Name
+  self.name = name
+
+  # Attack and Defence Dice count
+  slef.attack = attack
+  self.defence = defence

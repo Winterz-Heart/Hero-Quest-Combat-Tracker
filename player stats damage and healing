@@ -1,5 +1,3 @@
-w#!/usr/bin/env python
-
 class PLAYER:
   def __init__(self, name, movement_dice, attack_dice, defence_dice, body, mind):
 
@@ -52,37 +50,34 @@ class PLAYER:
     if self.current_body <= 0:
       self.current_body = 0
       self.body_status = "In Shock"
+      self.current_attack = 1
+      self.current_defence = 2
+      self.current_movement = 1
       return self.body_status
-      
-      """
-      Need to work out how to add in temporary stat changes as when
-      players are "In Shock" their attack is reduced to 1, their defence
-      is reduced to 2 and their movement points are reduced to 1
-      """
-
+     
   # Healing Body Points
   def heal_body(self, body_heal_value):
     self.body_heal_value = body_heal_value
     self.current_body += self.body_heal_value
 
-      # Over healing Prevention
-      if self.current_body > self.max_body:
-        self.current_body = self.max_body:
-        print(f"{self.name} has had their Body restored to {self.max_body}")
-      else:
-        print(f"{self.name} has had their Body restored to {self.current_body}")
+    # Over healing Prevention
+    if self.current_body > self.max_body:
+      self.current_body = self.max_body:
+      print(f"{self.name} has had their Body restored to {self.max_body}")
+    else:
+      print(f"{self.name} has had their Body restored to {self.current_body}")
 
   # Healing Mind Points
   def heal_mind(self, mind_heal_value):
     self.mind_heal_value = mind_heal_value
     self.current_mind += self.mind_heal_value
 
-      # Over healing Prevention
-      if self.current_mind > self.max_mind:
-        self.current_mind = self.max_mind:
-        print(f"{self.name} has had their Mind restored to {self.max_mind}")
-      else:
-        print(f"{self.name} has had their Mind restored to {self.current_mind}")
+    # Over healing Prevention
+    if self.current_mind > self.max_mind:
+      self.current_mind = self.max_mind:
+      print(f"{self.name} has had their Mind restored to {self.max_mind}")
+    else:
+      print(f"{self.name} has had their Mind restored to {self.current_mind}")
 
 # Setting the Players stats
 
@@ -151,3 +146,146 @@ def get_player_mind():
 def create_player(name, movement_dice, attack_dice, defence_dice, body, mind):
   player = PLAYER(name, movement_dice, attack_dice, defence_dice, body, mind)
   return player
+
+# Print list of current party memebers and their status
+def print_party_status(party):
+  print("\nCurrent Party Status:")
+  for k, v in party.items():
+    if party[k].body_status == "Alive":
+      print(f"Name: {party[k].name}, Movement: {party[k].current_movement}, Attack: {party[k].current_attack}, Defence: {party[k].current_defence}, Body: {party[k].current_body}/{party[k].max_body} - {party[k].body_status},  Mind: {party[k].current_mind}/{party[k].max_mind} - {party[k].mind_status}")
+    else:
+      print(f"Name: {party[k].name} - {party[k].body_status}")
+
+# Handling game mechanics
+def handling_game_mechanics_menu():
+  option = input("\nSelect an option:\n1. Take body damage\n2. Take mind damage\n3. Heal body\n4. Heal mind\n5. Exit\n")
+  return option
+
+# Getting target player
+def get_target_player(party):
+  while True:
+    player = input("Enter the name of the player to target: ").lower()
+    if player in party:
+      return party[player]
+    else:
+      print("Invalid player name. Please try again.")
+
+# Main application
+if __name__ == "__main__":
+  try:
+    print("\n")
+    print("\n")
+    print("Welcome to the Player Party Tracker!")
+    print("\n")
+    print("\n")
+
+    # Dictionary to hold the party members
+    party = {}
+
+    setting_up_party = True
+
+    handling_game_mechanics = True
+
+    party_death_count = 0
+
+    while setting_up_party:
+
+      player_name = get_player_name()
+      if player_name == "q":
+        break
+      else:
+        player_attack = get_player_attack_dice()
+        player_defence = get_player_defence_dice()
+        player_movement = get_player_movement_dice()
+        player_body = get_player_body()
+        player_mind = get_player_mind()
+
+        player = create_player(player_name, player_movement, player_attack, player_defence, player_body, player_mind)
+        party.update({player.name: player}) 
+
+    # Print the party status
+    print_party_status(party)
+
+    while handling_game_mechanics:
+      option = handling_game_mechanics_menu()
+      
+      # Player taking body damage
+      if option == "1":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_damage_value_body = int(input(f"Enter the amount of Body damage {target_player.name} is taking: "))
+            party[target_player.name].take_damage_body(target_damage_value_body)
+        
+            if party[target_player.name].body_status == "Dead":
+              party_death_count += 1
+            
+            print_party_status(party)
+
+            if party_death_count == len(party):
+              print("All players are dead. Game Over!")
+              exit()
+
+          except ValueError:
+            print("Invalid Body damage value. Please enter a number")
+          else:
+            break
+
+      # Player taking mind damage
+      elif option == "2":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_damage_value_mind = int(input(f"Enter the amount of Mind damage {target_player.name} is taking: "))
+            party[target_player.name].take_damage_mind(target_damage_value_mind)
+
+            print_party_status(party)
+
+          except ValueError:
+            print("Invalid Mind damage value. Please enter a number")
+          else:
+            break        
+
+      # Player healing body points
+      elif option == "3":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_heal_value_body = int(input(f"Enter the amount of Body healing {target_player.name} is taking: "))
+            party[target_player.name].heal_body(target_heal_value_body)
+
+            print_party_status(party)
+
+          except ValueError:
+            print("Invalid Body heal value. Please enter a number")
+          else:
+            break
+
+      # Player healing mind points
+      elif option == "4":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_heal_value_mind = int(input(f"Enter the amount of Mind healing {target_player.name} is taking: "))
+            party[target_player.name].heal_mind(target_heal_value_mind)
+
+            print_party_status(party)
+
+          except ValueError:
+            print("Invalid Mind heal value. Please enter a number")
+          else:
+            break
+
+      # Exit the game
+      elif option == "5":
+        print("Exiting the game...")
+        exit()
+  except KeyboardInterrupt:
+    print("\nClosing the game...")
+    
+
+

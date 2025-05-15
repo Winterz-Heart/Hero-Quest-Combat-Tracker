@@ -239,9 +239,9 @@ def print_party_status(party):
   print("\nCurrent Party Status:")
   for k, v in party.items():
     if party[k].body_status == "Alive":
-      print(f"Name: {party[k].name} \nMovement: {party[k].current_movement}, Attack: {party[k].current_attack}, Defence: {party[k].current_defence} \nBody: {party[k].current_body}/{party[k].max_body} - {party[k].body_status},  Mind: {party[k].current_mind}/{party[k].max_mind} - {party[k].mind_status}")
+      print(f"\nName: {party[k].name} \nMovement: {party[k].current_movement}, Attack: {party[k].current_attack}, Defence: {party[k].current_defence} \nBody: {party[k].current_body}/{party[k].max_body} - {party[k].body_status},  Mind: {party[k].current_mind}/{party[k].max_mind} - {party[k].mind_status}")
     else:
-      print(f"Name: {party[k].name} - {party[k].body_status}")
+      print(f"\nName: {party[k].name} - {party[k].body_status}")
 
 # Setting the Monsters stats
 # Monster Name
@@ -315,9 +315,9 @@ def print_encounter_status(encounter):
   print("\nCurrent Encounter Status:")
   for k, v in encounter.items():
     if encounter[k].body_status == "Alive":
-      print(f"Name: {encounter[k].name} \nMovement: {encounter[k].current_movement}, Attack: {encounter[k].current_attack}, Defence: {encounter[k].current_defence} \nBody: {encounter[k].current_body}/{encounter[k].max_body} - {encounter[k].body_status},  Mind: {encounter[k].current_mind}/{encounter[k].max_mind} - {encounter[k].mind_status}")
+      print(f"\nName: {encounter[k].name} \nMovement: {encounter[k].current_movement}, Attack: {encounter[k].current_attack}, Defence: {encounter[k].current_defence} \nBody: {encounter[k].current_body}/{encounter[k].max_body} - {encounter[k].body_status},  Mind: {encounter[k].current_mind}/{encounter[k].max_mind} - {encounter[k].mind_status}")
     else:
-      print(f"Name: {encounter[k].name} - {encounter[k].body_status}")
+      print(f"\nName: {encounter[k].name} - {encounter[k].body_status}")
 
 # Get Target player
 def get_target_player(party):
@@ -344,7 +344,7 @@ def handling_player_menu():
     print("2. Damage Mind")
     print("3. Heal Body")
     print("4. Heal Mind")
-    print("5. Exit")
+    print("5. Back to Main Menu")
     option = input("Choose an option: ")
     return option
 
@@ -355,7 +355,7 @@ def handling_monster_menu():
     print("2. Damage Mind")
     print("3. Heal Body")
     print("4. Heal Mind")
-    print("5. Exit")
+    print("5. Back to Main Menu")
     option = input("Choose an option: ")
     return option
 
@@ -444,9 +444,7 @@ def monster_management(encounter):
 
 if __name__ == "__main__":
     print("\n")
-    print("\n")
     print("Welcome to the Hero Quest monster and player tracker!")
-    print("\n")
     print("\n")
 
     party = {}

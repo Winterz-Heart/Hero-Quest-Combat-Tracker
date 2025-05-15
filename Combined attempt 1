@@ -318,3 +318,21 @@ def print_encounter_status(encounter):
       print(f"Name: {encounter[k].name}, Movement: {encounter[k].current_movement}, Attack: {encounter[k].current_attack}, Defence: {encounter[k].current_defence}, Body: {encounter[k].current_body}/{encounter[k].max_body} - {encounter[k].body_status},  Mind: {encounter[k].current_mind}/{encounter[k].max_mind} - {encounter[k].mind_status}")
     else:
       print(f"Name: {encounter[k].name} - {encounter[k].body_status}")
+
+# Get Target player
+def get_target_player(party):
+    while True:
+        player = input("Enter the name of the player to target: ").lower()
+        if player in party:
+            return party[player]
+        else:
+            print("Invalid player name. Please try again.")
+
+# Getting target monster
+def get_target_monster(encounter):
+  while True:
+    monster = input("Enter the name of the monster to target: ").lower()
+    if monster in encounter:
+      return encounter[monster]
+    else:
+      print("Invalid monster name. Please try again.")

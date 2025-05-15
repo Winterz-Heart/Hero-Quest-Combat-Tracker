@@ -1,0 +1,293 @@
+#!/usr/bin/env python3
+
+class PLAYER:
+  def __init__(self, name, movement_dice, attack_dice, defence_dice, body, mind):
+
+    # Player Name
+    self.name = name
+
+    # Movement Dice Count
+    self.current_movement = movement_dice
+    self.max_movement = movement_dice
+
+    # Attack and Defence Dice count
+    self.current_attack = attack_dice
+    self.max_attack = attack_dice
+    self.current_defence = defence_dice
+    self.max_defence = defence_dice
+
+    # Player current Body points and max Body points
+    self.max_body = body
+    self.current_body = body
+
+    # Status tied to Body points
+    self.body_status = "Alive"
+
+    # Player current Mind points and max Mind points
+    self.max_mind = mind
+    self.current_mind = mind
+
+    # Status tied to Mind points
+    self.mind_status = "Normal"
+
+  # Player taking damage to Body points
+  def take_damage_body(self, body_damage_value):
+    self.body_damage_value = body_damage_value
+    self.current_body -= self.body_damage_value
+    print(f"\n{self.name} takes {self.body_damage_value} to their Body!")
+
+    # When Player Body Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "Dead"
+      return self.body_status
+
+  # Player taking damage to mind points
+  def take_damage_mind(self, mind_damage_value):
+    self.mind_damage_value = mind_damage_value
+    self.current_mind -= self.mind_damage_value
+    print(f"\n{self.name} takes {self.mind_damage_value} to their Mind!")
+
+    # When Player Mind Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "In Shock"
+      self.current_attack = 1
+      self.current_defence = 2
+      self.current_movement = 1
+      return self.body_status
+     
+  # Healing Body Points
+  def heal_body(self, body_heal_value):
+    self.body_heal_value = body_heal_value
+    self.current_body += self.body_heal_value
+
+    # Over healing Prevention
+    if self.current_body > self.max_body:
+      self.current_body = self.max_body
+      print(f"{self.name} has had their Body restored to {self.max_body}")
+    else:
+      print(f"{self.name} has had their Body restored to {self.current_body}")
+
+  # Healing Mind Points
+  def heal_mind(self, mind_heal_value):
+    self.mind_heal_value = mind_heal_value
+    self.current_mind += self.mind_heal_value
+
+    # Over healing Prevention
+    if self.current_mind > self.max_mind:
+      self.current_mind = self.max_mind
+      print(f"{self.name} has had their Mind restored to {self.max_mind}")
+    else:
+      print(f"{self.name} has had their Mind restored to {self.current_mind}")
+
+# Setting the Players stats
+
+# Player Name
+def get_player_name():
+  name = input(f"/nEnter Name of player in party (Q to stop adding more): ").lower()
+  print("")
+  return name
+
+# Player Movement Dice count
+def get_player_movement_dice():
+  while True:
+    try:
+      movement_dice = int(input("Enter Player's Movement Dice count: "))
+    except ValueError:
+      print("Invalid Movement Dice count. Please enter a number")
+    else:
+      break
+  return movement_dice
+
+# Player Attack Dice count
+def get_player_attack_dice():
+  while True:
+    try:
+      attack_dice = int(input("Enter Player's Attack Dice count: "))
+    except ValueError:
+      print("Invalid Attack Dice count. Please enter a number")
+    else:
+      break
+  return attack_dice
+
+# Player defence Dice count
+def get_player_defence_dice():
+  while True:
+    try:
+      defence_dice = int(input("Enter Player's Defence Dice count: "))
+    except ValueError:
+      print("Invalid Defence Dice count. Please enter a number")
+    else:
+      break
+  return defence_dice
+
+# Player Body Points
+def get_player_body():
+  while True:
+    try:
+      body = int(input("Enter Player's Body Point total: "))
+    except ValueError:
+      print("Invalid Body Point total. Please enter a number")
+    else:
+      break
+  return body
+
+# Player Mind Points
+def get_player_mind():
+  while True:
+    try:
+      mind = int(input("Enter Player's Mind Point total: "))
+    except ValueError:
+      print("Invalid Mind Point total. Please enter a number")
+    else:
+      break
+  return mind
+
+# Creating the player
+def create_player(name, movement_dice, attack_dice, defence_dice, body, mind):
+  player = PLAYER(name, movement_dice, attack_dice, defence_dice, body, mind)
+  return player
+
+# Print list of current party memebers and their status
+def print_party_status(party):
+  print("\nCurrent Party Status:")
+  for k, v in party.items():
+    if party[k].body_status == "Alive":
+      print(f"Name: {party[k].name}, Movement: {party[k].current_movement}, Attack: {party[k].current_attack}, Defence: {party[k].current_defence}, Body: {party[k].current_body}/{party[k].max_body} - {party[k].body_status},  Mind: {party[k].current_mind}/{party[k].max_mind} - {party[k].mind_status}")
+    else:
+      print(f"Name: {party[k].name} - {party[k].body_status}")
+
+# Handling game mechanics
+def handling_game_mechanics_menu():
+  option = input("\nSelect an option:\n1. Take body damage\n2. Take mind damage\n3. Heal body\n4. Heal mind\n5. Exit\n")
+  return option
+
+# Getting target player
+def get_target_player(party):
+  while True:
+    player = input("Enter the name of the player to target: ").lower()
+    if player in party:
+      return party[player]
+    else:
+      print("Invalid player name. Please try again.")
+
+# Main application
+if __name__ == "__main__":
+  try:
+    print("\n")
+    print("\n")
+    print("Welcome to the Player Party Tracker!")
+    print("\n")
+    print("\n")
+
+    # Dictionary to hold the party members
+    party = {}
+
+    setting_up_party = True
+
+    handling_game_mechanics = True
+
+    party_death_count = 0
+
+    while setting_up_party:
+
+      player_name = get_player_name()
+      if player_name == "q":
+        break
+      else:
+        player_attack = get_player_attack_dice()
+        player_defence = get_player_defence_dice()
+        player_movement = get_player_movement_dice()
+        player_body = get_player_body()
+        player_mind = get_player_mind()
+
+        player = create_player(player_name, player_movement, player_attack, player_defence, player_body, player_mind)
+        party.update({player.name: player}) 
+
+    # Print the party status
+    print_party_status(party)
+
+    while handling_game_mechanics:
+      option = handling_game_mechanics_menu()
+      
+      # Player taking body damage
+      if option == "1":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_damage_value_body = int(input(f"Enter the amount of Body damage {target_player.name} is taking: "))
+            party[target_player.name].take_damage_body(target_damage_value_body)
+        
+            if party[target_player.name].body_status == "Dead":
+              party_death_count += 1
+            
+            print_party_status(party)
+
+            if party_death_count == len(party):
+              print("All players are dead. Game Over!")
+              exit()
+
+          except ValueError:
+            print("Invalid Body damage value. Please enter a number")
+          else:
+            break
+
+      # Player taking mind damage
+      elif option == "2":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_damage_value_mind = int(input(f"Enter the amount of Mind damage {target_player.name} is taking: "))
+            party[target_player.name].take_damage_mind(target_damage_value_mind)
+
+            print_party_status(party)
+
+          except ValueError:
+            print("Invalid Mind damage value. Please enter a number")
+          else:
+            break        
+
+      # Player healing body points
+      elif option == "3":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_heal_value_body = int(input(f"Enter the amount of Body healing {target_player.name} is taking: "))
+            party[target_player.name].heal_body(target_heal_value_body)
+
+            print_party_status(party)
+
+          except ValueError:
+            print("Invalid Body heal value. Please enter a number")
+          else:
+            break
+
+      # Player healing mind points
+      elif option == "4":
+        target_player = get_target_player(party)
+
+        while True:
+          try:
+            target_heal_value_mind = int(input(f"Enter the amount of Mind healing {target_player.name} is taking: "))
+            party[target_player.name].heal_mind(target_heal_value_mind)
+
+            print_party_status(party)
+
+          except ValueError:
+            print("Invalid Mind heal value. Please enter a number")
+          else:
+            break
+
+      # Exit the game
+      elif option == "5":
+        print("Exiting the game...")
+        exit()
+  except KeyboardInterrupt:
+    print("\nClosing the game...")
+    
+
+

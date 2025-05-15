@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 class PLAYER:
   def __init__(self, name, movement_dice, attack_dice, defence_dice, body, mind):
 
@@ -62,7 +64,7 @@ class PLAYER:
 
     # Over healing Prevention
     if self.current_body > self.max_body:
-      self.current_body = self.max_body:
+      self.current_body = self.max_body
       print(f"{self.name} has had their Body restored to {self.max_body}")
     else:
       print(f"{self.name} has had their Body restored to {self.current_body}")
@@ -74,7 +76,7 @@ class PLAYER:
 
     # Over healing Prevention
     if self.current_mind > self.max_mind:
-      self.current_mind = self.max_mind:
+      self.current_mind = self.max_mind
       print(f"{self.name} has had their Mind restored to {self.max_mind}")
     else:
       print(f"{self.name} has had their Mind restored to {self.current_mind}")

@@ -1,11 +1,84 @@
 #!/usr/bin/env python
 
 class PLAYER:
-  def __init__(self, name, attack, defence, body, mind):
+  def __init__(self, name, movement_dice, attack_dice, defence_dice, body, mind):
 
-  # Player Name
-  self.name = name
+    # Player Name
+    self.name = name
 
-  # Attack and Defence Dice count
-  slef.attack = attack
-  self.defence = defence
+    # Movement Dice Count
+    self.current_movement = movement_dice
+    self.max_movement = movement_dice
+
+    # Attack and Defence Dice count
+    self.current_attack = attack_dice
+    self.max_attack = attack_dice
+    self.current_defence = defence_dice
+    self.max_defence = defence_dice
+
+    # Player current Body points and max Body points
+    self.max_body = body
+    self.current_body = body
+
+    # Status tied to Body points
+    self.body_status = "Alive"
+
+    # Player current Mind points and max Mind points
+    self.max_mind = mind
+    self.current_mind = mind
+
+    # Status tied to Mind points
+    self.mind_status = "Normal"
+
+  # Player taking damage to Body points
+  def take_damage_body(self, body_damage_value):
+    self.body_damage_value = body_damage_value
+    self.current_body -= self.body_damage_value
+    print(f"\n{self.name} takes {self.body_damage_value} to their Body!")
+
+    # When Player Body Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "Dead"
+      return self.body_status
+
+  # Player taking damage to mind points
+  def take_damage_mind(self, mind_damage_value):
+    self.mind_damage_value = mind_damage_value
+    self.current_mind -= self.mind_damage_value
+    print(f"\n{self.name} takes {self.mind_damage_value} to their Mind!")
+
+    # When Player Mind Points reach 0
+    if self.current_body <= 0:
+      self.current_body = 0
+      self.body_status = "In Shock"
+      return self.body_status
+      
+      """
+      Need to work out how to add in temporary stat changes as when
+      players are "In Shock" their attack is reduced to 1, their defence
+      is reduced to 2 and their movement points are reduced to 1
+      """
+
+  # Healing Body Points
+  def heal_body(self, body_heal_value):
+    self.body_heal_value = body_heal_value
+    self.current_body += self.body_heal_value
+
+      # Over healing Prevention
+      if self.current_body > self.max_body:
+        self.current_body = self.max_body:
+        print(f"{self.name} has had their Body restored to {self.max_body}")
+      else:
+        print
+
+  # Healing Mind Points
+  def heal_mind(self, mind_heal_value):
+    self.mind_heal_value = mind_heal_value
+    self.current_mind += self.mind_heal_value
+
+      # Over healing Prevention
+      if self.current_mind > self.max_mind:
+        self.current_mind = self.max_mind:
+        print(f"{self.name} has had their Mind restored to {self.max_mind}") 
+
